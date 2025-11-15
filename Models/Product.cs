@@ -2,15 +2,15 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Đồ_Án_Lập_Trình_Web_Bán_Thức_Ăn_Nhanh.Models
+namespace DoAnLapTrinhWebBanThucAnNhanh.Models
 {
-    [Table("Products")] // 🔹 Mapping đúng với tên bảng trong SQL
+    [Table("Products")]
     public class Product
     {
         [Key]
-        [StringLength(5)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Display(Name = "Mã sản phẩm")]
-        public string ProductID { get; set; } = string.Empty;
+        public int ProductID { get; set; }
 
         [Required(ErrorMessage = "Tên sản phẩm không được để trống")]
         [StringLength(50, ErrorMessage = "Tên sản phẩm tối đa 50 ký tự")]
@@ -18,6 +18,7 @@ namespace Đồ_Án_Lập_Trình_Web_Bán_Thức_Ăn_Nhanh.Models
         public string ProductName { get; set; } = string.Empty;
 
         [Display(Name = "Mô tả sản phẩm")]
+        [StringLength(1000)]
         public string? Descriptions { get; set; }
 
         [Required(ErrorMessage = "Giá sản phẩm không được để trống")]
@@ -42,12 +43,12 @@ namespace Đồ_Án_Lập_Trình_Web_Bán_Thức_Ăn_Nhanh.Models
         [Display(Name = "Ngày tạo")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        // 🔸 Khóa ngoại liên kết với bảng Category
+        // FK → Category
         [Required]
         [Display(Name = "Danh mục")]
         public int CategoryID { get; set; }
 
         [ForeignKey(nameof(CategoryID))]
-        public virtual Category Category { get; set; }
+        public Category? Category { get; set; }
     }
 }

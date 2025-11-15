@@ -1,4 +1,4 @@
-namespace Đồ_Án_Lập_Trình_Web_Bán_Thức_Ăn_Nhanh.Models
+namespace DoAnLapTrinhWebBanThucAnNhanh.Models
 {
     public class ErrorViewModel
     {

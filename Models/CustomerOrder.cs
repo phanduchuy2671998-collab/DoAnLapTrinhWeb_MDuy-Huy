@@ -1,39 +1,53 @@
-﻿using System;
+﻿using DoAnLapTrinhWebBanThucAnNhanh.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Đồ_Án_Lập_Trình_Web_Bán_Thức_Ăn_Nhanh.Models
+namespace DoAnLapTrinhWebBanThucAnNhanh.Models
 {
-    [Table("CustomerOrders")] // 🔹 Đảm bảo EF map đúng bảng SQL
+    [Table("CustomerOrders")]
     public class CustomerOrder
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // IDENTITY(1,1)
-        [Display(Name = "Mã đơn hàng")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CustomerOrdersID { get; set; }
 
+        // FK → UserHL
         [Required]
-        [StringLength(7)]
-        [Display(Name = "Mã người dùng")]
-        public string UserID { get; set; } = string.Empty;
+        public int UserID { get; set; }
 
-        [ForeignKey("UserID")]
-        public virtual UserHL User { get; set; } // 🔹 Liên kết 1-1 đến bảng UserHL
+        [ForeignKey(nameof(UserID))]
+        public UserHL? User { get; set; }
 
-        [Display(Name = "Ngày đặt hàng")]
         public DateTime OrderDate { get; set; } = DateTime.Now;
 
         [Required]
         [Column(TypeName = "decimal(10,2)")]
-        [Range(0, double.MaxValue, ErrorMessage = "Tổng tiền phải >= 0")]
-        [Display(Name = "Tổng tiền")]
         public decimal TotalAmount { get; set; }
 
-        [Display(Name = "Yêu cầu thêm của khách hàng")]
+        // Thông tin giao hàng
+        [Required, StringLength(50)]
+        public string ReceiverName { get; set; } = string.Empty;
+
+        [Required, StringLength(15)]
+        public string Phone { get; set; } = string.Empty;
+
+        [Required, StringLength(200)]
+        public string ShippingAddress { get; set; } = string.Empty;
+
+        // Trạng thái đơn hàng
+        [StringLength(20)]
+        public string Status { get; set; } = "Pending";
+
+        // Phương thức thanh toán
+        [StringLength(20)]
+        public string PaymentMethod { get; set; } = "COD";
+
+        [StringLength(500)]
         public string? Request { get; set; }
 
-        // 🔹 Quan hệ 1-n với OrderDetails
-        public virtual ICollection<OrderDetail> OrderDetails { get; set; } = new List<OrderDetail>();
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+            = new List<OrderDetail>();
     }
 }

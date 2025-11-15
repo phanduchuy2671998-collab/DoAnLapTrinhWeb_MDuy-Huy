@@ -1,40 +1,43 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DoAnLapTrinhWebBanThucAnNhanh.Models;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Đồ_Án_Lập_Trình_Web_Bán_Thức_Ăn_Nhanh.Models
+namespace DoAnLapTrinhWebBanThucAnNhanh.Models
 {
-    [Table("OrderDetails")] // 🔹 Đảm bảo mapping đúng với bảng SQL
+    [Table("OrderDetails")]
     public class OrderDetail
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Display(Name = "Mã chi tiết đơn hàng")]
         public int OrderDetailID { get; set; }
 
+        // FK đến CustomerOrder
         [Required]
-        [Display(Name = "Mã đơn hàng")]
         public int CustomerOrderID { get; set; }
 
         [ForeignKey(nameof(CustomerOrderID))]
-        public virtual CustomerOrder CustomerOrder { get; set; }
+        public virtual CustomerOrder? CustomerOrder { get; set; }
 
+        // FK đến Product
         [Required]
-        [StringLength(5)]
-        [Display(Name = "Mã sản phẩm")]
-        public string ProductID { get; set; } = string.Empty;
+        public int ProductID { get; set; }
 
         [ForeignKey(nameof(ProductID))]
-        public virtual required Product Product { get; set; }
+        public virtual Product? Product { get; set; }
 
+        // Số lượng
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Số lượng phải lớn hơn 0")]
-        [Display(Name = "Số lượng")]
+        [Range(1, int.MaxValue)]
         public int Quantity { get; set; }
 
+        // Giá trên 1 sản phẩm
         [Required]
         [Column(TypeName = "decimal(10,2)")]
-        [Range(0, double.MaxValue, ErrorMessage = "Giá không được âm")]
-        [Display(Name = "Giá bán")]
+        [Range(0, double.MaxValue)]
         public decimal Price { get; set; }
+
+        // Tổng dòng = Quantity * Price
+        [NotMapped]
+        public decimal LineTotal => Quantity * Price;
     }
 }

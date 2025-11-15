@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using DoAnLapTrinhWebBanThucAnNhanh.Models;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Đồ_Án_Lập_Trình_Web_Bán_Thức_Ăn_Nhanh.Models
+namespace DoAnLapTrinhWebBanThucAnNhanh.Models
 {
-    [Table("Roles")] // 🔹 Mapping đúng với bảng Roles trong SQL
+    [Table("Roles")]
     public class Role
     {
         [Key]
@@ -13,12 +14,12 @@ namespace Đồ_Án_Lập_Trình_Web_Bán_Thức_Ăn_Nhanh.Models
         public int RoleID { get; set; }
 
         [Required(ErrorMessage = "Tên vai trò không được để trống")]
-        [StringLength(20, ErrorMessage = "Tên vai trò tối đa 20 ký tự")]
+        [StringLength(50, ErrorMessage = "Tên vai trò tối đa 50 ký tự")]
         [Display(Name = "Tên vai trò")]
         public string RoleName { get; set; } = string.Empty;
 
-        // 🔸 Liên kết 1-nhiều với UserHL
+        // 1 Role có nhiều UserHL
         [Display(Name = "Danh sách người dùng")]
-        public virtual ICollection<UserHL> Users { get; set; } = new HashSet<UserHL>();
+        public ICollection<UserHL> Users { get; set; } = new HashSet<UserHL>();
     }
 }
