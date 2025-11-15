@@ -1,0 +1,86 @@
+using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Đồ_Án_Lập_Trình_Web_Bán_Thức_Ăn_Nhanh.Models;
+using Đồ_Án_Lập_Trình_Web_Bán_Thức_Ăn_Nhanh.Data;
+
+namespace Đồ_Án_Lập_Trình_Web_Bán_Thức_Ăn_Nhanh.Controllers
+{
+    public class HomeController : Controller
+    {
+        private readonly ILogger<HomeController> _logger;
+        private readonly FastFoodContext _context;
+
+        public HomeController(ILogger<HomeController> logger, FastFoodContext context)
+        {
+            _logger = logger;
+            _context = context;
+        }
+
+        // ------------------- TRANG CHỦ -------------------
+        public async Task<IActionResult> Index(string? search, int? categoryId)
+        {
+            var products = _context.Products.AsQueryable();
+
+            // Tìm kiếm theo tên món ăn
+            if (!string.IsNullOrEmpty(search))
+            {
+                products = products.Where(p => p.Name.Contains(search));
+            }
+
+            // Lọc theo thể loại
+            if (categoryId != null)
+            {
+                products = products.Where(p => p.CategoryId == categoryId);
+            }
+
+            var result = await products
+                               .OrderByDescending(p => p.Id)
+                               .Take(8)
+                               .ToListAsync();
+
+            return View(result);
+        }
+
+
+        // ------------------- CHI TIẾT -------------------
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+                return BadRequest();
+
+            var food = await _context.Products
+                                     .Include(p => p.Category)
+                                     .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (food == null)
+                return NotFound();
+
+            return View(food);
+        }
+
+
+        // ------------------- TRANG LIÊN HỆ -------------------
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
+        // ------------------- TRANG CHÍNH SÁCH -------------------
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+
+        // ------------------- LỖI -------------------
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel
+            {
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            });
+        }
+    }
+}
