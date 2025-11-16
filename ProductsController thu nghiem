@@ -1,0 +1,90 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using DoAnLapTrinhWebBanThucAnNhanh.Models; // Chứa FastFoodDbContext và Models
+using System.Diagnostics;
+using System.Linq;
+
+namespace DoAnLapTrinhWebBanThucAnNhanh.Controllers
+{
+    public class AdminController : Controller
+    {
+        private readonly FastFoodDbContext _context;
+
+        public AdminController(FastFoodDbContext context)
+        {
+            _context = context;
+        }
+
+        // Dashboard
+        public IActionResult Dashboard()
+        {
+            ViewData["Title"] = "Dashboard";
+
+            // Ví dụ: thống kê tổng số sản phẩm, đơn hàng, người dùng
+            ViewBag.TotalProducts = _context.Products.Count();
+            ViewBag.TotalCustomerOrders = _context.CustomerOrders.Count();
+            ViewBag.TotalUsersHL = _context.UserHLs.Count();
+
+            return View();
+        }
+
+        // Quản lý Products
+        public IActionResult Products()
+        {
+            ViewData["Title"] = "Sản phẩm";
+            var products = _context.Products.Include(p => p.Category).ToList();
+            return View(products);
+        }
+
+        // Quản lý Categories
+        public IActionResult Categories()
+        {
+            ViewData["Title"] = "Danh mục";
+            var categories = _context.Categories.ToList();
+            return View(categories);
+        }
+
+        // Quản lý Orders
+        public IActionResult Orders()
+        {
+            ViewData["Title"] = "Đơn hàng";
+            var orders = _context.Orders.Include(o => o.User).ToList();
+            return View(orders);
+        }
+
+        // Báo cáo
+        public IActionResult Reports()
+        {
+            ViewData["Title"] = "Báo cáo";
+
+            // Ví dụ: doanh thu tổng, số đơn hàng
+            ViewBag.TotalRevenue = _context.OrderDetails.Sum(o => o.TotalAmount);
+            ViewBag.TotalOrders = _context.OrderDetails.Count();
+
+            return View();
+        }
+
+        // Quản lý Users
+        public IActionResult Users()
+        {
+            ViewData["Title"] = "Người dùng";
+            var users = _context.UsersHL.ToList();
+            return View(UserHL);
+        }
+
+        // Liên hệ khách hàng
+        public IActionResult Contact()
+        {
+            ViewData["Title"] = "Liên hệ khách hàng";
+            var Contact = _context.Contact.ToList();
+            return View(Contact);
+        }
+
+        // Logout
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Account");
+        }
+    }
+}
