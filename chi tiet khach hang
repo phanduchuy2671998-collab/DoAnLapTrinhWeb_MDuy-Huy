@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chi Tiết Khách Hàng - Gửi Đơn Hàng</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/Style.css">
+</head>
+<body>
+    <header class="header-section">
+    <div class="container-fluid px-4">
+        <div class="row align-items-center py-2">
+            <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">VietNamFood</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarColor01" aria-controls="navbarColor01"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    
+                    <div class="collapse navbar-collapse" id="navbarColor01">
+                        <ul class="navbar-nav me-auto nav">
+                            <li class="nav-item"><a class="nav-link" href="#">Trang chủ</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Liên hệ</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#">Giới thiệu</a></li>
+                        </ul>
+
+                       <ul class="navbar-nav d-flex align-items-center">
+    <li class="nav-item">
+        <a class="nav-link" href="#">Login</a>
+    </li>
+    <li class="nav-item ms-2">
+        <a href="Trang gioi hang.html" class="btn btn-warning btn-sm d-flex align-items-center">
+            <i class="bi bi-cart me-1"></i> Giỏ hàng: <span id="cart-count">0</span> món
+        </a>
+    </li>
+</ul>
+
+                        <form class="d-flex">
+                            <input class="form-control me-sm-2" type="search" placeholder="Search" />
+                            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                        </form>
+                    </div>
+
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+
+  <div class="container my-5">
+    <h2 class="mb-4">Thông Tin Khách Hàng</h2>
+    <form action="/gui-don-hang" method="post">
+      <!-- Tên khách hàng -->
+      <div class="mb-3">
+        <label for="fullname" class="form-label">Họ và tên</label>
+        <input type="text" class="form-control" id="fullname" name="fullname" required>
+      </div>
+      
+      <!-- Số điện thoại -->
+      <div class="mb-3">
+        <label for="phone" class="form-label">Số điện thoại</label>
+        <input type="tel" class="form-control" id="phone" name="phone" required>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+      </div>
+
+      <!-- Địa chỉ -->
+      <div class="mb-3">
+        <label for="address" class="form-label">Địa chỉ giao hàng</label>
+        <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
+      </div>
+
+      <!-- Ghi chú (không bắt buộc) -->
+      <div class="mb-3">
+        <label for="note" class="form-label">Ghi chú</label>
+        <textarea class="form-control" id="note" name="note" rows="2"></textarea>
+      </div>
+
+      <!-- Nút gửi đơn -->
+      <button type="submit" class="btn btn-primary">Gửi Đơn Hàng</button>
+    </form>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
